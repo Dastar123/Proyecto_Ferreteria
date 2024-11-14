@@ -35,7 +35,7 @@ body {
     border-radius: 8px;
 }
 
-.input {
+.input-login {
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -44,11 +44,11 @@ body {
     color: #fff;
 }
 
-.input::placeholder {
+.input-login::placeholder {
     color: #aaa;
 }
 
-.button {
+.button-login {
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -60,6 +60,68 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.button:hover {
+.button-login:hover {
+    background-color: #e05a1f;
+}
+
+/* Contenedor principal del formulario de producto */
+.product-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Título del formulario */
+.product-title {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+/* Estilo para las etiquetas */
+.product-label {
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Estilo para los inputs de texto y el área de descripción */
+.product-input, .product-textarea, .product-file {
+    width: 95%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    background-color: #444;
+    color: #fff;
+}
+
+/* Estilo para el área de texto */
+.product-textarea {
+    resize: none;
+}
+
+/* Estilo para el botón de envío */
+.product-button {
+    width: 95%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 17px;
+    font-weight: bold;
+    color: white;
+    background-color: #FF6B35;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.product-button:hover {
     background-color: #e05a1f;
 }
