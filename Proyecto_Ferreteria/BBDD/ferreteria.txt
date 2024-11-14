@@ -1,6 +1,6 @@
-create database ferreteriaLombardo;
+create database ferreteria;
 
-use ferreteriaLombardo;
+use ferreteria;
 
 CREATE TABLE cliente (
     id INT AUTO_INCREMENT,
