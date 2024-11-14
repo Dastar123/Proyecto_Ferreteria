@@ -4,33 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conexión a Base de Datos</title>
-
 </head>
 <body>
 
 <?php
-
-function conexion(){
-
+/**
+ * Función para establecer la conexión a la base de datos.
+ *
+ * Esta función crea una conexión con la base de datos MySQL usando los parámetros definidos.
+ * Si la conexión es exitosa, devuelve el objeto de la conexión ($conn).
+ *
+ * @author Raul
+ * @since 1.0
+ * @return mysqli Retorna el objeto de conexión mysqli si la conexión es exitosa.
+ * @throws Exception Lanza un error si la conexión no se puede establecer.
+ */
+function conexion() {
+    // Configuración de la conexión
     $servername = "localhost";  
-    $username = "root";       
-    $password = "";           
+    $username = "root";         
+    $password = "";            
     $dbname = "ferreteria";  
     
-    
+    // Crear la conexión
     $conn = new mysqli($servername, $username, $password, $dbname);
     
-    
+    // Verificar si la conexión fue exitosa
     if ($conn->connect_error) {
-        echo "<p class='error'>Conexión fallida: " . $conn->connect_error . "</p>";
+        die("<p class='error'>Conexión fallida: " . $conn->connect_error . "</p>");
     } else {
-        echo "<p class='success'>Conexión exitosa a la base de datos '$dbname'!</p>";
-}
- 
+        return $conn;
+    }
 }
 
-conexion();
- 
+/**
+ * Función para cerrar la conexión a la base de datos.
+ *
+ * Esta función cierra la conexión a la base de datos. Si la conexión es válida, la cierra,
+ * de lo contrario, muestra un mensaje de error indicando que no hay una conexión activa.
+ *
+ * @param mysqli $conn El objeto de conexión mysqli a cerrar.
+ * @return void No retorna ningún valor.
+ */
+function apagar($conn) {
+    if ($conn) {
+        $conn->close();  // Cierra la conexión a la base de datos
+        echo "<p>Conexión cerrada exitosamente.</p>";
+    } else {
+        echo "<p>No hay una conexión activa para cerrar.</p>";
+    }
+}
+
+// Llamada a la función para probar la conexión
+$con = conexion();
+
+// Llamada a la función para cerrar la conexión
+apagar($con);
 
 ?>
 
