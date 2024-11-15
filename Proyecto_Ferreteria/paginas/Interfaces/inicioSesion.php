@@ -9,11 +9,14 @@
 </head>
 
 <body>
-    <form class="form" action="paginaIntermedia.php" method="post">
-        <div class="inicio_sesion">
-            <input class="input-login" type="text" name="email" id="email" placeholder="Correo electrónico">
-            <input class="input-login" type="password" name="password" id="password" placeholder="Contraseña">
-            <button class="button-login" type="submit">Iniciar Sesión</button>
+    <form class="form" action="../Verificaciones/paginaIntermedia.php" method="post">
+        <h2 class="login-title">Iniciar sesión en Ferretería</h2>
+        <input type="hidden" name="accion" value="verificar_usuario">
+        <div class="login">
+            <input class="login-input" type="text" name="email" id="email" placeholder="Correo electrónico" required>
+            <input class="login-input" type="password" name="password" id="password" placeholder="Contraseña" required
+                minlength="6">
+            <button class="login-button" type="submit">Iniciar Sesión</button>
         </div>
     </form>
 </body>

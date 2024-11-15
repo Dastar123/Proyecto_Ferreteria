@@ -3,7 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito de Compras</title>  
+    <title>Carrito de Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: relative;
+        }
+
+        .fondo {
+            background-image: url(fondo.jpg);
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-size: cover;
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%; max-width: 600px;
+            text-align: center;
+        }
+
+        .close-btn, .empty-cart, .remove-selected {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .close-btn:hover, .empty-cart:hover, .remove-selected:hover {
+            background-color: #0056b3;
+        }
+
+        .cart-items {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .cart-items li {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px; border-bottom: 1px solid #ddd;
+        }
+
+        .cart-items li img {
+            width: 50px; height: 50px;
+            object-fit: cover;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .total-price {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #view-cart {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #view-cart:hover {
+            background-color: #0056b3;
+        }
+
+        .remove-selected {
+            display: none; 
+            margin-top: 20px;
+            background-color: #fe522b;
+        }
+    </style>
 </head>
 <body>
     <div class="fondo"></div>
