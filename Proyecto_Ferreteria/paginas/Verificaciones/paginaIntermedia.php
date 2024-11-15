@@ -60,13 +60,75 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
         
 
-        case 'registrar_usuario':
+        case 'registrar_usuario':   
+             // Obtener los datos del usuario
+            $nombre = $_POST['nombre'] ?? null;
+            $email = $_POST['email'] ?? null;
+            $password = $_POST['password'] ?? null;
+        
+            // Errores de validación
+            $errores = [];
+        
+            // Validar el nombre del usuario
+            if (!validarDato('string', $nombre)) {
+                $errores[] = "El nombre es inválido.";
+            }
+        
+            // Validar el correo electrónico
+            if (!validarDato('email', $email)) {
+                $errores[] = "El correo electrónico es inválido.";
+            }
+        
+            // Validar la contraseña
+            if (!validarDato('string', $password)) {
+                $errores[] = "La contraseña es inválida.";
+            }
+        
+            // Si hay errores, redirigir de vuelta con los errores
+            if (!empty($errores)) {
+                // Redirigir a la página de registro con los errores en la URL
+                header("Location: ../Interfaces/registrarUsuario.php?errores=" . urlencode(implode(", ", $errores)));
+                exit;
+            }
+        
+            // Crear el usuario (la contraseña debe ser cifrada antes de insertar)
+            $usuarioCreado = crearUsuario($nombre, $email, $password);
+        
+            if ($usuarioCreado) {
+                // Redirigir a la página de éxito
+                header("Location: ../Interfaces/catalogo.php?exito=Usuario+registrado+con+éxito.");
+            } else {
+                // Redirigir con mensaje de error si el correo ya está registrado
+                header("Location: ../Interfaces/registro.php?error=El+correo+electrónico+ya+está+registrado.");
+            }
+            exit;
             break;
 
-        case 'eliminar_producto':
-            break;
+        case 'eliminar_producto':   
+            // Obtener el ID del producto
+            $id = $_POST['id_producto'] ?? null;
+        
+            // Verificar si el ID es válido
+            if (!validarDato('numero', $id)) {
+                header("Location: ../Interfaces/catalogo.php?error=ID+de+producto+inválido.");
+                exit;
+            }
+        
+            // Eliminar el producto usando la función que creamos
+            $productoEliminado = eliminarProducto($id);
+        
+            if ($productoEliminado) {
+                // Redirigir al catálogo con un mensaje de éxito
+                header("Location: ../Interfaces/catalogo.php?exito=Producto+eliminado+con+éxito.");
+            } else {
+                // Redirigir con mensaje de error si no se pudo eliminar el producto
+                header("Location: ../Interfaces/catalogo.php?error=Hubo+un+error+al+eliminar+el+producto.");
+            }
+            exit;
+            break; 
 
         default:
+            // Si no se reconoce la acción, redirigir a una página de error
             header("Location: error.php");
             break;
     }
