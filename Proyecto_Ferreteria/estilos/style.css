@@ -72,7 +72,19 @@ body {
     background-color: #e05a1f;
 }
 
-/* Contenedor principal del formulario de producto */
+.admin {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 13px;
+}
+
+.admin-check {
+    color: white;
+    margin-right: 15px;
+}
+
+/* Agregar producto */
+
 .product-form {
     width: 100%;
     max-width: 400px;
