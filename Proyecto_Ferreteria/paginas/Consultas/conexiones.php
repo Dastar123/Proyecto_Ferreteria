@@ -49,7 +49,7 @@ function conexion() {
 function apagar($conn) {
     if ($conn) {
         $conn->close();  // Cierra la conexión a la base de datos
-        echo "<p>Conexión cerrada exitosamente.</p>";
+        
     } else {
         echo "<p>No hay una conexión activa para cerrar.</p>";
     }
@@ -59,9 +59,10 @@ function apagar($conn) {
 $con = conexion();
 
 // Llamada a la función para cerrar la conexión
-apagar($con);
+//apagar($con);
 
 ?>
 
 </body>
 </html>
+
