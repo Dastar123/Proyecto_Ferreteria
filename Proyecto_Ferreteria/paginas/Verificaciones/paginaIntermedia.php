@@ -61,7 +61,7 @@
 
             case 'registrar_usuario':
                 // Obtener los datos del usuario
-                $nombre = $_POST['nombre'] ?? null;
+                $nombre = $_POST['name'] ?? null;
                 $email = $_POST['email'] ?? null;
                 $password = $_POST['password'] ?? null;
 
@@ -74,9 +74,13 @@
                 }
 
                 // Validar el correo electrónico
-                if (!validarDato('email', $email)) {
-                    $errores[] = "El correo electrónico es inválido.";
+          
+
+                if (validarDato('email', $email) !== true) {
+                    $errores[] ="El correo es inválido."; // Agrega el mensaje de error devuelto por la validación
                 }
+                
+                
 
                 // Validar la contraseña
                 if (!validarDato('string', $password)) {

@@ -14,13 +14,13 @@
         <input type="hidden" name="accion" value="verificar_usuario">
         <div class="login">
             <input class="login-input" type="text" name="email" id="email" placeholder="Correo electrónico">
-            <input class="login-input" type="password" name="password" id="password" placeholder="Contraseña"
-                minlength="6">
+            <input class="login-input" type="password" name="password" id="password" placeholder="Contraseña">
             <div class="admin">
                 <label class="admin-check" for="admin">Continuar como administrador</label>
-                <input type="checkbox" name="admin" id="admin">
+                <input class="checkbox" type="checkbox" name="admin" id="admin">
             </div>
             <button class="login-button" type="submit">Iniciar Sesión</button>
+            <label class="link" onclick="window.location.href='../Interfaces/registro.php'">¿No tienes cuenta? Registrate ahora</label>
         </div>
     </form>
 </body>

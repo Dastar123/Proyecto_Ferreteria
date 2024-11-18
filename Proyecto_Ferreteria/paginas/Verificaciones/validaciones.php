@@ -17,17 +17,18 @@ function validarDato($tipo, $dato)
             } else {
                 return "Formato de número de teléfono incorrecto.";
             }
+            case 'email':
+                // Sanitizar el correo antes de validar
+                $dato = filter_var($dato, FILTER_SANITIZE_EMAIL);
+            
+                // Validar formato del correo electrónico
+                if (filter_var($dato, FILTER_VALIDATE_EMAIL)) {
+                    return true;
+                } else {
+                    return "Formato de correo electrónico incorrecto.";
+                }
 
-        case 'correo':
-            // Sanitiza el correo antes de validar
-            $dato = filter_var($dato, FILTER_SANITIZE_EMAIL);
-
-            // Validación de correo electrónico con dominios estándar
-            if (filter_var($dato, FILTER_VALIDATE_EMAIL) && preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|es|edu|gov|info|biz)$/', $dato)) {
-                return true;
-            } else {
-                return "Formato de correo electrónico incorrecto.";
-            }
+           
 
         case 'string':
             // Elimina etiquetas HTML y espacios en blanco

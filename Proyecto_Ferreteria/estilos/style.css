@@ -75,12 +75,23 @@ body {
 .admin {
     display: flex;
     justify-content: flex-end;
-    font-size: 13px;
 }
 
 .admin-check {
     color: white;
+    font-size: 14px;
     margin-right: 15px;
+}
+
+.admin-check, .checkbox {
+    cursor: pointer;
+}
+
+.link, .link:hover {
+    color: white;
+    margin: auto;
+    cursor: pointer;
+    font-size: 15px;
 }
 
 /* Agregar producto */

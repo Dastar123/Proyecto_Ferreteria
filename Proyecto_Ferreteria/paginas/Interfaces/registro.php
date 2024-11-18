@@ -13,13 +13,13 @@
         <h2 class="register-title">Crea una cuenta</h2>
         <div class="register">
             <input type="hidden" name="accion" value="registrar_usuario">
-            <input class="register-input" type="text" name="name" id="name" placeholder="Nombre" required>
-            <input class="register-input" type="text" name="email" id="email" placeholder="Correo electrónico" required>
-            <input class="register-input" type="password" name="password" id="password" placeholder="Contraseña"
-                required minlength="6">
+            <input class="register-input" type="text" name="name" id="name" placeholder="Nombre">
+            <input class="register-input" type="text" name="email" id="email" placeholder="Correo electrónico">
+            <input class="register-input" type="password" name="password" id="password" placeholder="Contraseña">
             <input class="register-input" type="password" name="confirm_password" id="confirm_password"
-                placeholder="Confirmar contraseña" required>
+                placeholder="Confirmar contraseña">
             <button class="register-button" type="submit">Registrarse</button>
+            <label class="link" onclick="window.location.href='../Interfaces/inicioSesion.php'">¿Ya tienes una cuenta? Inicia sesión</label>
         </div>
     </form>
 </body>
