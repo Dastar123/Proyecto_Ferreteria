@@ -69,7 +69,7 @@
                 $errores = [];
 
                 // Validar el nombre del usuario
-                if (!validarDato('string', $nombre)) {
+                if (validarDato('string', $nombre) !== true) {
                     $errores[] = "El nombre es inválido.";
                 }
 
@@ -83,7 +83,7 @@
                 
 
                 // Validar la contraseña
-                if (!validarDato('string', $password)) {
+                if  (validarDato('string', $password) !== true) {
                     $errores[] = "La contraseña es inválida.";
                 }
 
