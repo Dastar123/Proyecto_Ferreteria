@@ -113,7 +113,7 @@
 
             case 'eliminar_producto':
                 // Obtener el ID del producto
-                $id = $_POST['id_producto'] ?? null;
+                $id = $_POST['nombre_producto'] ?? null;
 
                 // Verificar si el ID es válido
                 if (!validarDato('numero', $id)) {
@@ -151,7 +151,7 @@
                 }elseif ($checkbox==true) {
                     if (verificarExisteAdministrador($email)) {
                         // Aquí puedes verificar la contraseña o redirigir a otra página
-                        header("Location: ../Interfaces/catalogo.php");
+                        header("Location: ../Interfaces/agregarProducto.php");
                         exit();
                     } else {
                         // Si el usuario no existe
