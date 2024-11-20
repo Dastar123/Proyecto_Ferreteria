@@ -64,7 +64,7 @@
                 $nombre = $_POST['name'] ?? null;
                 $email = $_POST['email'] ?? null;
                 $password = $_POST['password'] ?? null;
-
+                $confirmPassword = $_POST['confirm_password'] ?? null;
                 // Errores de validación
                 $errores = [];
 
@@ -74,23 +74,24 @@
                 }
 
                 // Validar el correo electrónico
-          
-
                 if (validarDato('email', $email) !== true) {
                     $errores[] ="El correo es inválido."; // Agrega el mensaje de error devuelto por la validación
                 }
-                
-                
 
                 // Validar la contraseña
                 if  (validarDato('string', $password) !== true) {
                     $errores[] = "La contraseña es inválida.";
                 }
 
+                //Valido que las contraseñas sean iguales
+                if($password!=$confirmPassword){
+                    $errores[] = "Las contraseñas no coinciden";
+                }
+
                 // Si hay errores, redirigir de vuelta con los errores
                 if (!empty($errores)) {
                     // Redirigir a la página de registro con los errores en la URL
-                    header("Location: ../Interfaces/registrarUsuario.php?errores=" . urlencode(implode(", ", $errores)));
+                    header("Location: ../Interfaces/registro.php?errores=" . urlencode(implode(", ", $errores)));
                     exit;
                 }
 
@@ -132,16 +133,29 @@
                 // Captura los datos del formulario
                 $email = $_POST['email'] ?? null;
                 $password = $_POST['password'] ?? null;
+                $checkbox=isset($_POST['admin'])??null;
 
                 // Validar si el correo existe
-                if (verificarExisteUsuario($email)) {
-                    // Aquí puedes verificar la contraseña o redirigir a otra página
-                    header("Location: ../Interfaces/catalogo.php");
-                    exit();
-                } else {
-                    // Si el usuario no existe
-                    header("Location: ../Interfaces/inicioSesion.php");
+                if($checkbox!==true){
+                    if (verificarExisteUsuario($email)) {
+                        // Aquí puedes verificar la contraseña o redirigir a otra página
+                        header("Location: ../Interfaces/catalogo.php");
+                        exit();
+                    } else {
+                        // Si el usuario no existe
+                        header("Location: ../Interfaces/inicioSesion.php");
+                    }
+                }elseif ($checkbox==true) {
+                    if (verificarExisteAdministrador($email)) {
+                        // Aquí puedes verificar la contraseña o redirigir a otra página
+                        header("Location: ../Interfaces/catalogo.php");
+                        exit();
+                    } else {
+                        // Si el usuario no existe
+                        header("Location: ../Interfaces/inicioSesion.php");
+                    }
                 }
+
                 exit;
 
             default:

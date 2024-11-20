@@ -74,12 +74,15 @@ body {
 
 .admin {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
 }
 
 .admin-check {
     color: white;
     font-size: 14px;
+}
+
+.checkbox {
     margin-right: 15px;
 }
 
@@ -232,14 +235,29 @@ h1 {
 /* catalogo */
 
 header {
-    background-color: #007bff;
+    background-color: #003366;
     color: white;
-    text-align: center;
     padding: 20px 0;
+    position: relative; /* Importante para el centrado absoluto del título */
 }
 
 header h1 {
     margin: 0;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    padding: 0 20px;
+}
+
+.menu-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
 }
 
 .catalog-container {
@@ -286,19 +304,22 @@ header h1 {
     color: #666;
 }
 
-.product-info button {
-    background-color: #007bff;
+.product-info button, .menu button {
+    background-color: #333333   ;
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
     transition: background-color 0.3s;
 }
 
-.product-info button:hover {
-    background-color: #0056b3;
+.product-info button {
+    margin-top: 10px;
+}
+
+.product-info button:hover, .menu button:hover {
+    background-color: #666666 ;
 }
 
 /*  fin catalogo */

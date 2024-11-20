@@ -8,7 +8,10 @@
 </head>
 <body>
     <header>
-        <h1>Catálogo de Productos</h1>
+        <div class="menu">
+            <h1 class="menu-title">Catálogo de Productos</h1>
+            <button type="menu-button" onclick="window.location.href='../Interfaces/inicioSesion.php'">Cerrar sesión</button>
+        </div>
     </header>
 
     <div class="catalog-container">

@@ -7,7 +7,7 @@
  * @param mixed $dato El dato que se desea validar.
  * @return mixed Retorna `true` si el dato es válido o un mensaje de error en caso contrario.
  */
-function validarDato($tipo, $dato) 
+function validarDato($tipo, $dato)
 {
     switch ($tipo) {
         case 'telefono':
@@ -17,18 +17,17 @@ function validarDato($tipo, $dato)
             } else {
                 return "Formato de número de teléfono incorrecto.";
             }
-            case 'email':
-                // Sanitizar el correo antes de validar
-                $dato = filter_var($dato, FILTER_SANITIZE_EMAIL);
             
-                // Validar formato del correo electrónico
-                if (filter_var($dato, FILTER_VALIDATE_EMAIL)) {
-                    return true;
-                } else {
-                    return "Formato de correo electrónico incorrecto.";
-                }
+        case 'email':
+            // Sanitizar el correo antes de validar
+            $dato = filter_var($dato, FILTER_SANITIZE_EMAIL);
 
-           
+            // Validar formato del correo electrónico
+            if (filter_var($dato, FILTER_VALIDATE_EMAIL)) {
+                return true;
+            } else {
+                return "Formato de correo electrónico incorrecto.";
+            }
 
         case 'string':
             // Elimina etiquetas HTML y espacios en blanco
@@ -77,7 +76,7 @@ function validarDato($tipo, $dato)
     }
 }
 
- /**
+/**
  * Función para validar imágenes.
  *
  * @param array $imagen Información del archivo subida ($_FILES['nombre']).
@@ -85,7 +84,8 @@ function validarDato($tipo, $dato)
  * @param int $tamanioMaximo Tamaño máximo permitido en bytes (opcional).
  * @return mixed Retorna `true` si la imagen es válida o un mensaje de error en caso contrario.
  */
-function validarImagen($imagen) {
+function validarImagen($imagen)
+{
     // Verificar si se ha subido un archivo
     if ($imagen['error'] !== 0) {
         return false; // Error en la carga
@@ -105,6 +105,4 @@ function validarImagen($imagen) {
     return true;
 }
 
-
-
-    ?>
+?>

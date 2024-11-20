@@ -1,4 +1,5 @@
 <?php
+
 require_once 'conexiones.php';
 
 /**
@@ -54,7 +55,8 @@ function verificarExisteUsuario($email) {
     apagar($conn); // Cierra la conexión
 
     return $existe;
-} 
+}
+
 /**
  * Función para verificar si un administrador existe.
  *
@@ -79,6 +81,7 @@ function verificarExisteAdministrador($email) {
 
     return $existe;
 }
+
 /**
  * Función para eliminar un producto por su ID.
  *
@@ -100,7 +103,6 @@ function eliminarProducto($id) {
 
     return $resultado; // Retorna `true` si se eliminó correctamente
 }
-
 
 /**
  * Función para verificar si un producto ya existe en la base de datos por su nombre.
@@ -125,8 +127,6 @@ function verificarProductoPorNombre($nombre) {
     return $existe;
 }
 
-
-
 function crearProducto($nombre, $descripcion, $precio, $imagen) {
     // Verifica si el producto ya existe
     if (verificarProductoPorNombre($nombre)) {
@@ -141,8 +141,6 @@ function crearProducto($nombre, $descripcion, $precio, $imagen) {
         header("Location: ../Interfaces/agregarProducto.php?error=El+producto+con+el+nombre+{$nombre}+ya+existe.");
         exit; // Detiene la ejecución después de la redirección
     }
-
-   
 
     // Mover la imagen al directorio deseado en el servidor (por ejemplo, '../../imagenes//')
     $rutaImagen = '../../imagenes///' . basename($imagen['name']);  // Cambié la ruta a '../../imagenes//'
@@ -181,10 +179,5 @@ function crearProducto($nombre, $descripcion, $precio, $imagen) {
         exit;
     }
 }
-
-
-
-
-
 
 ?>

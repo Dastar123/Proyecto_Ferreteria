@@ -16,8 +16,8 @@
             <input class="login-input" type="text" name="email" id="email" placeholder="Correo electrónico">
             <input class="login-input" type="password" name="password" id="password" placeholder="Contraseña">
             <div class="admin">
-                <label class="admin-check" for="admin">Continuar como administrador</label>
                 <input class="checkbox" type="checkbox" name="admin" id="admin">
+                <label class="admin-check" for="admin">Continuar como administrador</label>
             </div>
             <button class="login-button" type="submit">Iniciar Sesión</button>
             <label class="link" onclick="window.location.href='../Interfaces/registro.php'">¿No tienes cuenta? Registrate ahora</label>

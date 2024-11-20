@@ -10,6 +10,7 @@
 <body>
 
     <?php
+    
     /**
      * Función para establecer la conexión a la base de datos.
      *
