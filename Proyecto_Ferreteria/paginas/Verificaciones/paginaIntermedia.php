@@ -65,6 +65,7 @@
                 $email = $_POST['email'] ?? null;
                 $password = $_POST['password'] ?? null;
                 $confirmPassword = $_POST['confirm_password'] ?? null;
+                $confirmPassword = $_POST['confirm_password'] ?? null;
                 // Errores de validación
                 $errores = [];
 
@@ -88,9 +89,15 @@
                     $errores[] = "Las contraseñas no coinciden";
                 }
 
+                //Valido que las contraseñas sean iguales
+                if($password!=$confirmPassword){
+                    $errores[] = "Las contraseñas no coinciden";
+                }
+
                 // Si hay errores, redirigir de vuelta con los errores
                 if (!empty($errores)) {
                     // Redirigir a la página de registro con los errores en la URL
+                    header("Location: ../Interfaces/registro.php?errores=" . urlencode(implode(", ", $errores)));
                     header("Location: ../Interfaces/registro.php?errores=" . urlencode(implode(", ", $errores)));
                     exit;
                 }
@@ -109,7 +116,7 @@
 
             case 'eliminar_producto':
                 // Obtener el ID del producto
-                $id = $_POST['id_producto'] ?? null;
+                $id = $_POST['nombre_producto'] ?? null;
 
                 // Verificar si el ID es válido
                 if (!validarDato('numero', $id)) {
