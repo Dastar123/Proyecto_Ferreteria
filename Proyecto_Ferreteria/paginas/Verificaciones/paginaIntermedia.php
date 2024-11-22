@@ -155,7 +155,7 @@
                 }elseif ($checkbox==true) {
                     if (verificarExisteAdministrador($email)) {
                         // Aquí puedes verificar la contraseña o redirigir a otra página
-                        header("Location: ../Interfaces/catalogo.php");
+                        header("Location: ../Interfaces/admin.php");
                         exit();
                     } else {
                         // Si el usuario no existe

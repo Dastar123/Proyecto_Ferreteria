@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../estilos/style.css">
-    <title>Carrito de Compras</title>  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Carrito de Compras</title>
 </head>
+
 <body>
-    <div class="fondo"></div>
-    <h1>Carrito de Compras</h1>
+    <header>
+        <div class="menu">
+            <h1 class="menu-title">Carrito</h1>
+            <div class="menu-buttons">
+                <button type="button" onclick="window.location.href='../Interfaces/catalogo.php'">Catálogo</button>
+                <button type="button" onclick="window.location.href='../Interfaces/inicioSesion.php'">Cerrar sesión</button>
+            </div>
+        </div>
+    </header>
 
     <button id="view-cart">Ver Carrito</button>
 
     <div class="modal" id="cartModal">
         <div class="modal-content">
             <h2>Carrito de Compras</h2>
+
             <ul class="cart-items" id="cartItems">
-                <!-- Aquí se agregarán los productos -->
             </ul>
+
             <div class="total-price" id="totalPrice">Total: 0€</div>
-            <button class="close-btn" id="closeModal">Cerrar</button>
-            <button class="empty-cart" id="emptyCartButton">Vaciar Carrito</button>
-            <button class="remove-selected" id="removeSelectedButton">Eliminar Producto</button>
+
+            <div class="cart-actions">
+                <button class="close-btn" id="closeModal">Cerrar</button>
+                <button class="empty-cart" id="emptyCartButton">Vaciar Carrito</button>
+                <button class="remove-selected" id="removeSelectedButton" style="display: none;">Eliminar Producto</button>
+            </div>
         </div>
     </div>
 
@@ -92,4 +106,20 @@
         });
     </script>
 </body>
+
+<footer>
+    <p>&copy; 2024 Tienda de Ferretería. Todos los derechos reservados.</p>
+    <div class="social-links">
+        <a href="https://www.facebook.com" target="_blank" title="Facebook">
+            <i class="fab fa-facebook"></i>
+        </a>
+        <a href="https://www.twitter.com" target="_blank" title="Twitter">
+            <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://www.instagram.com" target="_blank" title="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
+</footer>
+
 </html>

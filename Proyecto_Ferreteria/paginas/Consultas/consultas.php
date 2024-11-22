@@ -12,7 +12,8 @@ require_once 'conexiones.php';
  * @param string $pass Contraseña del usuario.
  * @return bool Retorna `true` si el usuario fue creado exitosamente, `false` si el correo ya existe o hay un error.
  */
-function crearUsuario($nombre, $email, $pass) {
+function crearUsuario($nombre, $email, $pass)
+{
     $conn = conexion();
 
     // Verifica si el correo ya existe
@@ -40,7 +41,8 @@ function crearUsuario($nombre, $email, $pass) {
  * @param string $email Correo electrónico del usuario.
  * @return bool Retorna `true` si el usuario existe, `false` si no.
  */
-function verificarExisteUsuario($email) {
+function verificarExisteUsuario($email)
+{
     $conn = conexion();
 
     // Consulta para buscar el correo
@@ -65,7 +67,8 @@ function verificarExisteUsuario($email) {
  * @param string $email Correo electrónico del administrador.
  * @return bool Retorna `true` si el administrador existe, `false` si no.
  */
-function verificarExisteAdministrador($email) {
+function verificarExisteAdministrador($email)
+{
     $conn = conexion();
 
     // Consulta para buscar el correo en la tabla administrador
@@ -90,7 +93,8 @@ function verificarExisteAdministrador($email) {
  * @param int $id El ID del producto a eliminar.
  * @return bool Retorna `true` si la eliminación fue exitosa, `false` en caso contrario.
  */
-function eliminarProducto($id) {
+function eliminarProducto($id)
+{
     $conn = conexion();
 
     // Consulta para eliminar el producto
@@ -110,7 +114,8 @@ function eliminarProducto($id) {
  * @param string $nombre El nombre del producto a verificar.
  * @return bool Retorna `true` si el producto existe, `false` en caso contrario.
  */
-function verificarProductoPorNombre($nombre) {
+function verificarProductoPorNombre($nombre)
+{
     $conn = conexion();
 
     // Consulta para verificar si el producto existe
@@ -127,7 +132,8 @@ function verificarProductoPorNombre($nombre) {
     return $existe;
 }
 
-function crearProducto($nombre, $descripcion, $precio, $imagen) {
+function crearProducto($nombre, $descripcion, $precio, $imagen)
+{
     // Verifica si el producto ya existe
     if (verificarProductoPorNombre($nombre)) {
         // Verifica si $nombre es un array, si lo es, conviértelo en una cadena
@@ -178,6 +184,40 @@ function crearProducto($nombre, $descripcion, $precio, $imagen) {
         header("Location: ../Interfaces/agregarProducto.php?error=Hubo+un+error+al+agregar+el+producto.");
         exit;
     }
+}
+
+function obtenerProductos()
+{
+    $conn = conexion();
+
+    // Consulta para obtener los productos
+    $query = $conn->prepare("SELECT nombre, precio, descripcion, imagen FROM productos");
+    $query->execute();
+
+    // Usar get_result() para obtener un objeto resultante
+    $result = $query->get_result();
+
+    if ($result->num_rows > 0) {
+        echo '<div class="catalog-container">';
+        while ($row = $result->fetch_assoc()) {
+            echo '
+            <div class="product-card">
+                <img src="' . htmlspecialchars($row['imagen']) . '" alt="Producto">
+                <div class="product-info">
+                    <h3>' . htmlspecialchars($row['nombre']) . '</h3>
+                    <p>' . htmlspecialchars($row['descripcion']) . '</p>
+                    <p>Precio: ' . htmlspecialchars($row['precio']) . ' €</p>
+                    <button type="button" class="product-button">Agregar al carrito</button>
+                </div>
+            </div>';
+        }
+        echo '</div>';
+    } else {
+        echo '<p>No hay productos disponibles actualmente.</p>';
+    }
+
+    $query->close();
+    apagar($conn); // Cierra la conexión
 }
 
 ?>
