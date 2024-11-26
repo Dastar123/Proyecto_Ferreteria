@@ -18,17 +18,35 @@ require_once '../Consultas/consultas.php';
     <header>
         <div class="menu">
             <h1 class="menu-title">Catálogo de Productos</h1>
+            <div class="menu-search">
+                <input type="text" placeholder="Buscar productos..." id="searchInput" aria-label="Buscar producto">
+            </div>
             <div class="menu-buttons">
-                <button type="button" onclick="window.location.href='../Interfaces/carrito.php'">Carrito</button>
+                <button type="button" id="view-cart">Ver carrito</button>
                 <button type="button" onclick="window.location.href='../Interfaces/inicioSesion.php'">Cerrar sesión</button>
             </div>
         </div>
     </header>
 
+    <!-- Modal del Carrito -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <h2>Carrito de Compras</h2>
+            <ul id="cartItems" class="cart-items"></ul>
+            <div class="cart-footer">
+                <div class="total-price" id="totalPrice">Total: 0€</div>
+                <button id="closeModal" class="close-btn">Cerrar</button>
+                <button id="emptyCartButton" class="empty-cart">Vaciar Carrito</button>
+            </div>
+        </div>
+    </div>
+
     <?php
-        obtenerProductos();
+        obtenerProductosClientes();
     ?>
 
+    <script src="../../scripts/carrito.js"></script>
+    <script src="../../scripts/barraBusqueda.js"></script>
 </body>
 
 <footer>

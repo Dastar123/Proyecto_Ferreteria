@@ -186,7 +186,7 @@ function crearProducto($nombre, $descripcion, $precio, $imagen)
     }
 }
 
-function obtenerProductos()
+function obtenerProductosClientes()
 {
     $conn = conexion();
 
@@ -201,7 +201,7 @@ function obtenerProductos()
         echo '<div class="catalog-container">';
         while ($row = $result->fetch_assoc()) {
             echo '
-            <div class="product-card">
+            <div class="product-card" data-name="' . htmlspecialchars($row['nombre']) . '" data-price="' . htmlspecialchars($row['precio']) . '" data-img="' . htmlspecialchars($row['imagen']) . '">
                 <img src="' . htmlspecialchars($row['imagen']) . '" alt="Producto">
                 <div class="product-info">
                     <h3>' . htmlspecialchars($row['nombre']) . '</h3>
@@ -213,7 +213,54 @@ function obtenerProductos()
         }
         echo '</div>';
     } else {
-        echo '<p>No hay productos disponibles actualmente.</p>';
+        echo '<p class="catalog-container-empty">No hay productos disponibles actualmente.</p>';
+    }
+
+    $query->close();
+    apagar($conn); // Cierra la conexión
+}
+
+function obtenerProductosAdmin()
+{
+    $conn = conexion();
+
+    // Consulta para obtener los productos
+    $query = $conn->prepare("SELECT id, nombre, precio, descripcion, imagen FROM productos");
+    $query->execute();
+
+    // Usar get_result() para obtener un objeto resultante
+    $result = $query->get_result();
+
+    if ($result->num_rows > 0) {
+        echo '<div class="catalog-container">';
+        while ($row = $result->fetch_assoc()) {
+            echo '
+            <div class="product-card" data-nombre="' . htmlspecialchars($row['nombre']) . '">
+                <img src="' . htmlspecialchars($row['imagen']) . '" alt="Producto">
+                <div class="product-info">
+                    <h3>' . htmlspecialchars($row['nombre']) . '</h3>
+                    <p>' . htmlspecialchars($row['descripcion']) . '</p>
+                    <p>Precio: ' . htmlspecialchars($row['precio']) . ' €</p>
+
+                    <div class="product-buttons">
+                        <!-- Botón de Eliminar -->
+                        <form action="../Verificaciones/paginaIntermedia.php" method="post"">
+                            <input type="hidden" name="accion" value="eliminar_producto"' . htmlspecialchars($row['id']) . '">
+                            <button type="submit" class="product-button">Eliminar</button>
+                        </form>
+
+                        <!-- Botón de Modificar -->
+                        <form action="../Verificaciones/paginaIntermedia.php"" method="get">
+                            <input type="hidden" name="accion" value="modificar_producto"' . htmlspecialchars($row['id']) . '">
+                            <button type="submit" class="product-button">Modificar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>';
+        }
+        echo '</div>';
+    } else {
+        echo '<p class="catalog-container-empty">No hay productos disponibles actualmente.</p>';
     }
 
     $query->close();

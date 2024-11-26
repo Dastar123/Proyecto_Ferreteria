@@ -19,15 +19,20 @@ require_once '../Consultas/consultas.php';
         <div class="menu-admin">
             <h1 class="menu-admin-title">Catálogo de Productos</h1>
             <div class="menu-admin-search">
-                <input type="text" placeholder="Buscar productos..." id="searchInput">
-                <button type="button" id="searchButton">Buscar</button>
+                <input type="text" placeholder="Buscar productos..." id="searchInput" aria-label="Buscar producto">
             </div>
             <div class="menu-admin-buttons">
+                <label for="admin">(Eres Admin)</label>
                 <button type="button" onclick="window.location.href='../Interfaces/inicioSesion.php'">Cerrar sesión</button>
             </div>
         </div>
     </header>
 
+    <?php
+        obtenerProductosAdmin();
+    ?>
+    
+    <script src="../../scripts/barraBusqueda.js"></script>
 </body>
 
 <footer>
