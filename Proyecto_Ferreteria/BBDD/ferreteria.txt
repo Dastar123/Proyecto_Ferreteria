@@ -18,27 +18,15 @@ CREATE TABLE administrador (
     PRIMARY KEY (id)
 );
 
-
-CREATE TABLE carrito (
-    id INT AUTO_INCREMENT,
-    cliente_id INT NOT NULL,
-    producto_id INT NOT NULL,
-    cantidad INT NOT NULL DEFAULT 1,
-    estado ENUM('activo', 'pagado', 'cancelado') NOT NULL DEFAULT 'activo',
-    PRIMARY KEY (id),
-    FOREIGN KEY (cliente_id) REFERENCES cliente(id) ON DELETE CASCADE,
-    FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
-);
-
 CREATE TABLE productos (
     id INT AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL,.
     precio DECIMAL(10, 2) NOT NULL,
     descripcion VARCHAR(200) NOT NULL,
-    favorito boolean not null,
     imagen LONGBLOB,
     PRIMARY KEY (id)
 );
+
 INSERT INTO administrador (nombre, email, pass) VALUES ('Gian', 'gian@gmail.com', 1234);
 INSERT INTO administrador (nombre, email, pass) VALUES ('Raul', 'raul@gmail.com', 1234);
 INSERT INTO administrador (nombre, email, pass) VALUES ('Ivan', 'ivan@gmail.com', 1234);

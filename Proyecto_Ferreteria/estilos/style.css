@@ -28,7 +28,8 @@ main {
     padding-bottom: 20px;
 }
 
-.login-form {
+.login-form,
+.register-form {
     width: 100%;
     max-width: 300px;
     margin: 50px auto;

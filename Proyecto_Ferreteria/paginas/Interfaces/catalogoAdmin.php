@@ -21,8 +21,9 @@ require_once '../Consultas/consultas.php';
             <div class="menu-admin-search">
                 <input type="text" placeholder="Buscar productos..." id="searchInput" aria-label="Buscar producto">
             </div>
+            <label for="admin">(Eres Admin)</label>
             <div class="menu-admin-buttons">
-                <label for="admin">(Eres Admin)</label>
+            <button type="button" onclick="window.location.href='../Interfaces/agregarProducto.php'">Agregar producto</button>
                 <button type="button" onclick="window.location.href='../Interfaces/inicioSesion.php'">Cerrar sesión</button>
             </div>
         </div>

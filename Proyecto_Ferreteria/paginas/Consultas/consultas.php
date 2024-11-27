@@ -30,7 +30,13 @@ function crearUsuario($nombre, $email, $pass)
     $query->close();
     apagar($conn); // Cierra la conexión
 
-    return $resultado; // Retorna true si la inserción fue exitosa
+    if ($resultado) {
+        // Redirigir a la página de éxito
+        header("Location: ../Interfaces/inicioSesion.php?exito=Usuario+registrado+con+éxito.");
+    } else {
+        // Redirigir con mensaje de error si el correo ya está registrado
+        header("Location: ../Interfaces/registro.php?error=El+correo+electrónico+ya+está+registrado.");
+    }
 }
 
 /**
@@ -83,29 +89,6 @@ function verificarExisteAdministrador($email)
     apagar($conn); // Cierra la conexión
 
     return $existe;
-}
-
-/**
- * Función para eliminar un producto por su ID.
- *
- * Elimina un registro de la tabla `productos` basado en el ID proporcionado.
- *
- * @param int $id El ID del producto a eliminar.
- * @return bool Retorna `true` si la eliminación fue exitosa, `false` en caso contrario.
- */
-function eliminarProducto($id)
-{
-    $conn = conexion();
-
-    // Consulta para eliminar el producto
-    $query = $conn->prepare("DELETE FROM productos WHERE id = ?");
-    $query->bind_param("i", $id); // Vincula el parámetro como entero
-    $resultado = $query->execute(); // Ejecuta la consulta
-
-    $query->close();
-    apagar($conn); // Cierra la conexión
-
-    return $resultado; // Retorna `true` si se eliminó correctamente
 }
 
 /**
@@ -177,13 +160,96 @@ function crearProducto($nombre, $descripcion, $precio, $imagen)
 
     if ($resultado) {
         // Si la inserción fue exitosa, redirigimos con éxito
-        header("Location: ../Interfaces/catalogo.php?exito=Producto+agregado+exitosamente.");
+        header("Location: ../Interfaces/catalogoAdmin.php?exito=Producto+agregado+exitosamente.");
         exit;  // Detiene la ejecución después de la redirección
     } else {
         // Redirigir con mensaje de error si hubo un problema en la base de datos
         header("Location: ../Interfaces/agregarProducto.php?error=Hubo+un+error+al+agregar+el+producto.");
         exit;
     }
+}
+
+/**
+ * Función para modificar un producto existente.
+ *
+ * @param int $id El ID del producto a modificar.
+ * @param string $nombre El nuevo nombre del producto.
+ * @param string $descripcion La nueva descripción del producto.
+ * @param float $precio El nuevo precio del producto.
+ * @param array|null $imagen El archivo de imagen a modificar (opcional).
+ * @return bool Retorna `true` si la modificación fue exitosa, `false` en caso contrario.
+ */
+function modificarProducto($id, $nombre, $descripcion, $precio, $imagen = null)
+{
+    $conn = conexion();  // Obtiene la conexión
+
+    // Obtener la ruta de la imagen actual desde la base de datos
+    $query = $conn->prepare("SELECT imagen FROM productos WHERE id = ?");
+    $query->bind_param("i", $id);
+    $query->execute();
+    $query->bind_result($imagenActual);
+    $query->fetch();
+    $query->close();
+
+    // Inicializar la ruta final de la imagen
+    $rutaImagenFinal = $imagenActual;
+
+    // Si se proporciona una nueva imagen, procesarla
+    if ($imagen !== null && $imagen['error'] == 0) {
+        // Validar la imagen
+        $validacionImagen = validarImagen($imagen);
+        if ($validacionImagen !== true) {
+            return $validacionImagen; // Si la imagen no es válida, retornar el mensaje de error
+        }
+
+        // Eliminar la imagen anterior si existe
+        if ($imagenActual && file_exists($imagenActual)) {
+            unlink($imagenActual); // Elimina el archivo de la imagen anterior
+        }
+
+        // Mover la nueva imagen al directorio
+        $rutaImagen = '../../imagenes/' . basename($imagen['name']);  // Establecemos la nueva ruta de la imagen
+        if (!move_uploaded_file($imagen['tmp_name'], $rutaImagen)) {
+            return "Hubo un problema al guardar la imagen.";
+        }
+
+        $rutaImagenFinal = $rutaImagen; // Actualizar la ruta final de la imagen
+    }
+    
+    // Prepara la consulta para actualizar los datos del producto junto con la nueva imagen
+    $query = $conn->prepare("UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, imagen = ? WHERE id = ?");
+    $query->bind_param("ssdsi", $nombre, $descripcion, $precio, $rutaImagenFinal, $id); // Vincula los parámetros
+
+    // Ejecuta la consulta
+    $resultado = $query->execute();
+
+    $query->close();
+    apagar($conn);  // Cierra la conexión
+
+    return $resultado; // Retorna `true` si la actualización fue exitosa, de lo contrario `false`
+}
+
+/**
+ * Función para eliminar un producto por su ID.
+ *
+ * Elimina un registro de la tabla `productos` basado en el ID proporcionado.
+ *
+ * @param int $id El ID del producto a eliminar.
+ * @return bool Retorna `true` si la eliminación fue exitosa, `false` en caso contrario.
+ */
+function eliminarProducto($id)
+{
+    $conn = conexion();
+
+    // Consulta para eliminar el producto
+    $query = $conn->prepare("DELETE FROM productos WHERE id = ?");
+    $query->bind_param("i", $id); // Vincula el parámetro como entero
+    $resultado = $query->execute(); // Ejecuta la consulta
+
+    $query->close();
+    apagar($conn); // Cierra la conexión
+
+    return $resultado; // Retorna `true` si se eliminó correctamente
 }
 
 function obtenerProductosClientes()
@@ -235,7 +301,7 @@ function obtenerProductosAdmin()
         echo '<div class="catalog-container">';
         while ($row = $result->fetch_assoc()) {
             echo '
-            <div class="product-card" data-nombre="' . htmlspecialchars($row['nombre']) . '">
+            <div class="product-card" data-name="' . htmlspecialchars($row['nombre']) . '">
                 <img src="' . htmlspecialchars($row['imagen']) . '" alt="Producto">
                 <div class="product-info">
                     <h3>' . htmlspecialchars($row['nombre']) . '</h3>
@@ -245,13 +311,15 @@ function obtenerProductosAdmin()
                     <div class="product-buttons">
                         <!-- Botón de Eliminar -->
                         <form action="../Verificaciones/paginaIntermedia.php" method="post"">
-                            <input type="hidden" name="accion" value="eliminar_producto"' . htmlspecialchars($row['id']) . '">
+                            <input type="hidden" name="accion" value="eliminar_producto">
+                            <input type="hidden" name="id" value="'. htmlspecialchars($row['id']) .'">
                             <button type="submit" class="product-button">Eliminar</button>
                         </form>
 
                         <!-- Botón de Modificar -->
-                        <form action="../Verificaciones/paginaIntermedia.php"" method="get">
-                            <input type="hidden" name="accion" value="modificar_producto"' . htmlspecialchars($row['id']) . '">
+                        <form action="../Interfaces/modificarProducto.php" method="post">
+                            <input type="hidden" name="accion" value="modificar_producto">
+                            <input type="hidden" name="id" value="'. htmlspecialchars($row['id']) .'">
                             <button type="submit" class="product-button">Modificar</button>
                         </form>
                     </div>
@@ -267,4 +335,29 @@ function obtenerProductosAdmin()
     apagar($conn); // Cierra la conexión
 }
 
-?>
+/**
+ * Función para obtener un producto por su ID.
+ *
+ * @param int $id El ID del producto a obtener.
+ * @return array|null Retorna un arreglo asociativo con los datos del producto o null si no se encuentra.
+ */
+function obtenerProductoPorId($id)
+{
+    $conn = conexion(); // Obtiene la conexión
+
+    // Consulta para obtener el producto por ID
+    $query = $conn->prepare("SELECT * FROM productos WHERE id = ?");
+    $query->bind_param("i", $id); // Vincula el ID como parámetro entero
+    $query->execute();
+
+    $resultado = $query->get_result();
+
+    if ($resultado->num_rows > 0) {
+        return $resultado->fetch_assoc(); // Devuelve los detalles del producto
+    } else {
+        return false; // Si no se encuentra el producto
+    }
+
+    $query->close();
+    apagar($conn);  // Cierra la conexión
+}
