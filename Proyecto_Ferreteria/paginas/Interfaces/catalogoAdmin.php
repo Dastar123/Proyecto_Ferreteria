@@ -1,6 +1,8 @@
 <?php
+
 // Conexión a la base de datos
 require_once '../Consultas/consultas.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -34,21 +36,21 @@ require_once '../Consultas/consultas.php';
     ?>
     
     <script src="../../scripts/barraBusqueda.js"></script>
+    
+    <footer>
+        <p>&copy; 2024 Tienda de Ferretería. Todos los derechos reservados.</p>
+        <div class="social-links">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+    </footer>
 </body>
-
-<footer>
-    <p>&copy; 2024 Tienda de Ferretería. Todos los derechos reservados.</p>
-    <div class="social-links">
-        <a href="https://www.facebook.com" target="_blank" title="Facebook">
-            <i class="fab fa-facebook"></i>
-        </a>
-        <a href="https://www.twitter.com" target="_blank" title="Twitter">
-            <i class="fab fa-twitter"></i>
-        </a>
-        <a href="https://www.instagram.com" target="_blank" title="Instagram">
-            <i class="fab fa-instagram"></i>
-        </a>
-    </div>
-</footer>
 
 </html>

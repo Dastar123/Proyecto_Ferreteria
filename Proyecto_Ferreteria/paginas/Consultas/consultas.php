@@ -215,7 +215,7 @@ function modificarProducto($id, $nombre, $descripcion, $precio, $imagen = null)
 
         $rutaImagenFinal = $rutaImagen; // Actualizar la ruta final de la imagen
     }
-    
+
     // Prepara la consulta para actualizar los datos del producto junto con la nueva imagen
     $query = $conn->prepare("UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, imagen = ? WHERE id = ?");
     $query->bind_param("ssdsi", $nombre, $descripcion, $precio, $rutaImagenFinal, $id); // Vincula los parámetros
@@ -312,14 +312,14 @@ function obtenerProductosAdmin()
                         <!-- Botón de Eliminar -->
                         <form action="../Verificaciones/paginaIntermedia.php" method="post"">
                             <input type="hidden" name="accion" value="eliminar_producto">
-                            <input type="hidden" name="id" value="'. htmlspecialchars($row['id']) .'">
+                            <input type="hidden" name="id" value="' . htmlspecialchars($row['id']) . '">
                             <button type="submit" class="product-button">Eliminar</button>
                         </form>
 
                         <!-- Botón de Modificar -->
                         <form action="../Interfaces/modificarProducto.php" method="post">
                             <input type="hidden" name="accion" value="modificar_producto">
-                            <input type="hidden" name="id" value="'. htmlspecialchars($row['id']) .'">
+                            <input type="hidden" name="id" value="' . htmlspecialchars($row['id']) . '">
                             <button type="submit" class="product-button">Modificar</button>
                         </form>
                     </div>

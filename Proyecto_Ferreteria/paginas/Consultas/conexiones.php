@@ -54,5 +54,3 @@ $con = conexion();
 
 // Llamada a la función para cerrar la conexión
 //apagar($con);
-
-?>

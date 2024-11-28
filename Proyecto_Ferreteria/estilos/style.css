@@ -378,7 +378,8 @@ header {
     gap: 1rem;
 }
 
-.product-button.eliminar, .product-button.modificar{
+.product-button.eliminar,
+.product-button.modificar {
     background-color: #FF6B35;
     color: white;
     border: none;
@@ -406,7 +407,8 @@ header {
 
 .menu-admin {
     display: flex;
-    justify-content: space-between; /* Espacio entre los elementos */
+    justify-content: space-between;
+    /* Espacio entre los elementos */
     width: 100%;
     align-items: center;
 }
@@ -417,7 +419,8 @@ header {
     text-align: center;
 }
 
-.menu-search, .menu-admin-search {
+.menu-search,
+.menu-admin-search {
     display: flex;
     gap: 10px;
     align-items: center;
@@ -433,8 +436,10 @@ header {
 
 .menu-admin-buttons {
     display: flex;
-    justify-content: flex-end; /* Alineación a la derecha */
-    gap: 50px; /* Espacio entre los botones */
+    justify-content: flex-end;
+    /* Alineación a la derecha */
+    gap: 50px;
+    /* Espacio entre los botones */
     align-items: center;
 }
 

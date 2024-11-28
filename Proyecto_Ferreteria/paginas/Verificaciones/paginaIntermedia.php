@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $password = $_POST['password'] ?? null;
             $confirmPassword = $_POST['confirm_password'] ?? null;
             $confirmPassword = $_POST['confirm_password'] ?? null;
-            // Errores de validación
             $errores = [];
 
             // Validar el nombre del usuario
@@ -48,8 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Crear el usuario (la contraseña debe ser cifrada antes de insertar)
             $usuarioCreado = crearUsuario($nombre, $email, $password);
-
-            
             exit;
 
         case 'verificar_usuario':
@@ -148,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         case 'modificar_producto':
             if (isset($_POST['id'])) {
                 $id = intval($_POST['id']); // Asegúrate de convertir el ID a entero
-        
+
                 // Redirige a la interfaz de modificación con el ID del producto
                 header("Location: ../Interfaces/modificarProducto.php?id=$id");
                 exit;
@@ -156,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header("Location: ../Interfaces/catalogoAdmin.php?error=ID+no+especificado+para+modificación.");
                 exit;
             }
-        break;
+            break;
 
         case 'confirmar_modificacion':
             if (isset($_POST['id'])) {
@@ -165,37 +162,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $descripcion = $_POST['description'] ?? null;
                 $precio = $_POST['price'] ?? null;
                 $imagen = $_FILES['image'] ?? null;
-        
+
                 // Obtener la imagen actual si no se envió una nueva
                 $imagenActual = $_POST['current_image'] ?? null;
-        
+
                 // Validar los datos del producto
                 $errores = [];
-        
+
                 if (!validarDato('string', $nombre)) {
                     $errores[] = "El nombre del producto es inválido.";
                 }
-        
+
                 if (!validarDato('string', $descripcion)) {
                     $errores[] = "La descripción del producto es inválida.";
                 }
-        
+
                 if (!validarDato('numero', $precio)) {
                     $errores[] = "El precio debe ser un número positivo.";
                 }
-        
+
                 // Validación de la imagen (solo si se ha subido una nueva)
                 if ($imagen && !validarImagen($imagen)) {
                     $errores[] = "La imagen es inválida o no se subió correctamente.";
                 }
-        
+
                 // Si hay errores, redirigir de vuelta al formulario con los errores
                 if (!empty($errores)) {
                     // Redirigir a modificarProducto.php con los errores en la URL
                     header("Location: ../Interfaces/modificarProducto.php?id=$id&errores=" . urlencode(implode(", ", $errores)));
                     exit;  // Asegurarse de que el script no continúe
                 }
-        
+
                 // Si no hay errores, procesar la actualización del producto
                 if ($imagen && $imagen['error'] == 0) {
                     // Se proporciona una nueva imagen
@@ -204,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     // No se proporciona una nueva imagen, se mantiene la actual
                     $productoModificado = modificarProducto($id, $nombre, $descripcion, $precio, $imagenActual);
                 }
-        
+
                 // Verificar si el producto fue modificado exitosamente
                 if ($productoModificado) {
                     // Redirigir a la página de éxito (catalogoAdmin.php en este caso)

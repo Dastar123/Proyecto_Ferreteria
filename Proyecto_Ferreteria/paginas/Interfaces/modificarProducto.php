@@ -1,4 +1,5 @@
 <?php
+
 // Incluir la conexión y las funciones necesarias
 require_once '../Consultas/consultas.php';
 require_once '../Verificaciones/paginaIntermedia.php';
@@ -26,6 +27,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     header("Location: ../Interfaces/catalogoAdmin.php?error=ID+no+especificado+o+inválido.");
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +51,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             <input type="hidden" name="accion" value="confirmar_modificacion">
             <input type="hidden" name="id" value="<?= $producto['id'] ?>"> <!-- Pasamos el ID del producto al formulario -->
             <input type="hidden" name="current_image" value="<?= $producto['imagen'] ?>"> <!-- Imagen actual -->
-            
+
             <!-- Nombre del producto -->
             <label for="product-name" class="product-label">Nombre del Producto</label>
             <input type="text" id="product-name" name="product_name" class="product-input" placeholder="Nombre del producto" value="<?php echo $nombre; ?>" required>
@@ -74,21 +76,20 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         </div>
     </form>
 
+    <footer>
+        <p>&copy; 2024 Tienda de Ferretería. Todos los derechos reservados.</p>
+        <div class="social-links">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+    </footer>
 </body>
-
-<footer>
-    <p>&copy; 2024 Tienda de Ferretería. Todos los derechos reservados.</p>
-    <div class="social-links">
-        <a href="https://www.facebook.com" target="_blank" title="Facebook">
-            <i class="fab fa-facebook"></i>
-        </a>
-        <a href="https://www.twitter.com" target="_blank" title="Twitter">
-            <i class="fab fa-twitter"></i>
-        </a>
-        <a href="https://www.instagram.com" target="_blank" title="Instagram">
-            <i class="fab fa-instagram"></i>
-        </a>
-    </div>
-</footer>
 
 </html>
