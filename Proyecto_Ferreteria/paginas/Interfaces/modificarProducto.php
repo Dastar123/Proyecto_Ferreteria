@@ -48,34 +48,34 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         <div class="product-container">
             <h2 class="product-title">Modificar Producto</h2>
 
+            <!-- Campos ocultos para enviar información adicional del producto al servidor -->
             <input type="hidden" name="accion" value="confirmar_modificacion">
             <input type="hidden" name="id" value="<?= $producto['id'] ?>"> <!-- Pasamos el ID del producto al formulario -->
             <input type="hidden" name="current_image" value="<?= $producto['imagen'] ?>"> <!-- Imagen actual -->
 
-            <!-- Nombre del producto -->
             <label for="product-name" class="product-label">Nombre del Producto</label>
-            <input type="text" id="product-name" name="product_name" class="product-input" placeholder="Nombre del producto" value="<?php echo $nombre; ?>" required>
+            <input type="text" id="product-name" name="product_name" class="product-input" placeholder="Nombre del producto" value="<?php echo $nombre; ?>">
 
-            <!-- Descripción del producto -->
             <label for="description" class="product-label">Descripción</label>
-            <textarea id="description" name="description" class="product-textarea" placeholder="Descripción del producto" rows="4" required><?php echo $descripcion; ?></textarea>
+            <textarea id="description" name="description" class="product-textarea" placeholder="Descripción del producto" rows="4"><?php echo $descripcion; ?></textarea>
 
-            <!-- Precio del producto -->
             <label for="price" class="product-label">Precio</label>
-            <input type="number" id="price" name="price" class="product-input" placeholder="Precio" min="0" step="0.01" value="<?php echo $precio; ?>" required>
+            <input type="number" id="price" name="price" class="product-input" placeholder="Precio" min="0" step="0.01" value="<?php echo $precio; ?>">
 
-            <!-- Imagen del producto -->
             <label for="image" class="product-label">Imagen del Producto</label>
             <input type="file" id="image" name="image" class="product-file" accept="image/*">
+            
             <!-- Muestra la imagen actual si existe -->
             <?php if ($producto['imagen']): ?>
                 <img src="<?= $producto['imagen'] ?>" alt="Imagen actual del producto" width="100">
             <?php endif; ?>
 
+            <!-- Botón para enviar el formulario con la modificación del producto -->
             <button type="submit" class="product-button">Confirmar Producto</button>
         </div>
     </form>
 
+    <!-- Pie de página con información de copyright y enlaces a redes sociales que se abrirán en una nueva pestaña -->
     <footer>
         <p>&copy; 2024 Tienda de Ferretería. Todos los derechos reservados.</p>
         <div class="social-links">

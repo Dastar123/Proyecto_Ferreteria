@@ -1,6 +1,6 @@
 <?php
 
-// Conexión a la base de datos
+// Incluimos el archivo que contiene las funciones para consultar la base de datos
 require_once '../Consultas/consultas.php';
 
 ?>
@@ -17,12 +17,18 @@ require_once '../Consultas/consultas.php';
 </head>
 
 <body>
+
+    <!-- Encabezado con el nombre del catálogo y las opciones de búsqueda y navegación -->
     <header>
         <div class="menu">
             <h1 class="menu-title">Catálogo de Productos</h1>
+            
+            <!-- Barra de búsqueda para que los clientes busquen productos -->
             <div class="menu-search">
                 <input type="text" placeholder="Buscar productos..." id="searchInput" aria-label="Buscar producto">
             </div>
+            
+            <!-- Botones de navegación, uno para ver el carrito y otro para cerrar sesión -->
             <div class="menu-buttons">
                 <button type="button" id="view-cart">Ver carrito</button>
                 <button type="button" onclick="window.location.href='../Interfaces/inicioSesion.php'">Cerrar sesión</button>
@@ -30,10 +36,12 @@ require_once '../Consultas/consultas.php';
         </div>
     </header>
 
-    <!-- Modal del Carrito -->
+    <!-- Modal para mostrar el carrito de compras -->
     <div class="modal" id="cartModal">
         <div class="modal-content">
             <h2>Carrito de Compras</h2>
+
+            <!-- Lista de productos que el usuario ha añadido al carrito -->
             <ul id="cartItems" class="cart-items"></ul>
             <div class="cart-footer">
                 <div class="total-price" id="totalPrice">Total: 0€</div>
@@ -44,12 +52,15 @@ require_once '../Consultas/consultas.php';
     </div>
 
     <?php
+        // Llamamos a la función que obtiene y muestra los productos en el catálogo
         obtenerProductosClientes();
     ?>
 
+    <!-- Enlazamos los scripts JavaScript para el carrito y la barra de búsqueda -->
     <script src="../../scripts/carrito.js"></script>
     <script src="../../scripts/barraBusqueda.js"></script>
     
+    <!-- Pie de página con información de copyright y enlaces a redes sociales que se abrirán en una nueva pestaña -->
     <footer>
         <p>&copy; 2024 Tienda de Ferretería. Todos los derechos reservados.</p>
         <div class="social-links">

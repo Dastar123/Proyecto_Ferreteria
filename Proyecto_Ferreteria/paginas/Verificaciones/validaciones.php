@@ -79,7 +79,7 @@ function validarDato($tipo, $dato)
 /**
  * Función para validar imágenes.
  *
- * @param array $imagen Información del archivo subida ($_FILES['nombre']).
+ * @param array $imagen Información del archivo subido ($_FILES['nombre']).
  * @param array $formatosPermitidos Lista de extensiones permitidas (opcional).
  * @param int $tamanioMaximo Tamaño máximo permitido en bytes (opcional).
  * @return mixed Retorna `true` si la imagen es válida o un mensaje de error en caso contrario.

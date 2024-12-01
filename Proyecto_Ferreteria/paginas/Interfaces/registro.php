@@ -10,20 +10,31 @@
 </head>
 
 <body>
+    
+    <!-- Formulario para registrar a un nuevo usuario -->
     <form class="register-form" action="../Verificaciones/paginaIntermedia.php" method="post">
         <h2 class="register-title">Crea una cuenta</h2>
+        
+        <!-- Campo oculto que indica la acción que debe realizarse cuando se envía el formulario -->
         <input type="hidden" name="accion" value="registrar_usuario">
+        
+        <!-- Contenedor para los campos del formulario -->
         <div class="register">
             <input class="register-input" type="text" name="name" id="name" placeholder="Nombre">
             <input class="register-input" type="text" name="email" id="email" placeholder="Correo electrónico">
             <input class="register-input" type="password" name="password" id="password" placeholder="Contraseña">
             <input class="register-input" type="password" name="confirm_password" id="confirm_password"
                 placeholder="Confirmar contraseña">
+            
+            <!-- Botón para enviar el formulario -->
             <button class="register-button" type="submit">Registrarse</button>
+            
+            <!-- Enlace a la página de inicio de sesión si el usuario ya tiene cuenta -->
             <label class="link" onclick="window.location.href='../Interfaces/inicioSesion.php'">¿Ya tienes una cuenta? Inicia sesión</label>
         </div>
     </form>
 
+    <!-- Pie de página con información de copyright y enlaces a redes sociales que se abrirán en una nueva pestaña -->
     <footer>
         <p>&copy; 2024 Tienda de Ferretería. Todos los derechos reservados.</p>
         <div class="social-links">

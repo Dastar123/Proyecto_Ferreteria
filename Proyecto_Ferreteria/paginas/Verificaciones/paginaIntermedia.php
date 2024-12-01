@@ -1,20 +1,21 @@
 <?php
 
+// Incluir archivos necesarios para consultas, conexiones y validaciones
 require_once '../Consultas/consultas.php';
 require_once '../Consultas/conexiones.php';
 require_once 'validaciones.php';
 
-// Verificar qué acción se está realizando
+// Verificar si la solicitud es POST para procesar acciones específicas
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $accion = $_POST['accion'] ?? null; // Obtener la acción
+    $accion = $_POST['accion'] ?? null; // Obtener la acción enviada por el formulario
 
+    // Procesar la acción según su valor
     switch ($accion) {
         case 'registrar_usuario':
             // Obtener los datos del usuario
             $nombre = $_POST['name'] ?? null;
             $email = $_POST['email'] ?? null;
             $password = $_POST['password'] ?? null;
-            $confirmPassword = $_POST['confirm_password'] ?? null;
             $confirmPassword = $_POST['confirm_password'] ?? null;
             $errores = [];
 
@@ -45,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit;
             }
 
-            // Crear el usuario (la contraseña debe ser cifrada antes de insertar)
+            // Crear el usuario
             $usuarioCreado = crearUsuario($nombre, $email, $password);
             exit;
 
@@ -53,26 +54,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Captura los datos del formulario
             $email = $_POST['email'] ?? null;
             $password = $_POST['password'] ?? null;
-            $checkbox = isset($_POST['admin']) ?? null;
+            $checkbox = isset($_POST['admin']);
 
             // Validar si el correo existe
             if ($checkbox !== true) {
-                if (verificarExisteUsuario($email)) {
+                if (verificarExisteUsuario($email, $password)) {
                     // Aquí puedes verificar la contraseña o redirigir a otra página
                     header("Location: ../Interfaces/catalogo.php");
                     exit();
                 } else {
                     // Si el usuario no existe
-                    header("Location: ../Interfaces/inicioSesion.php");
+                    header("Location: ../Interfaces/inicioSesion.php?error=Credenciales+inválidas");
                 }
             } elseif ($checkbox == true) {
-                if (verificarExisteAdministrador($email)) {
+                if (verificarExisteAdministrador($email, $password)) {
                     // Aquí puedes verificar la contraseña o redirigir a otra página
                     header("Location: ../Interfaces/catalogoAdmin.php");
                     exit();
                 } else {
                     // Si el usuario no existe
-                    header("Location: ../Interfaces/inicioSesion.php");
+                    header("Location: ../Interfaces/inicioSesion.php?error=Credenciales+inválidas");
                 }
             }
             exit;
@@ -83,22 +84,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $descripcion = $_POST['description'] ?? null;
             $precio = $_POST['price'] ?? null;
             $imagen = $_FILES['image'] ?? null;
-
-            // Errores de validación
             $errores = [];
 
             // Validación del nombre del producto
-            if (!validarDato('string', $nombre)) {
+            if (validarDato('string', $nombre) !== true) {
                 $errores[] = "El nombre del producto es inválido.";
             }
 
             // Validación de la descripción
-            if (!validarDato('string', $descripcion)) {
+            if (validarDato('string', $descripcion) !== true) {
                 $errores[] = "La descripción del producto es inválida.";
             }
 
             // Validación del precio
-            if (!validarDato('numero', $precio)) {
+            if (validarDato('numero', $precio) !== true) {
                 $errores[] = "El precio debe ser un número positivo.";
             }
 
@@ -114,9 +113,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit;  // Asegurarse de que el script no continúe
             }
 
-            // Si no hay errores, procesar la creación del producto
+            // Crear el producto si no hay errores
             $productoCreado = crearProducto($nombre, $descripcion, $precio, $imagen);
-            break;
+            exit;
 
         case 'eliminar_producto':
 
@@ -169,15 +168,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Validar los datos del producto
                 $errores = [];
 
-                if (!validarDato('string', $nombre)) {
+                if (validarDato('string', $nombre) !== true) {
                     $errores[] = "El nombre del producto es inválido.";
                 }
 
-                if (!validarDato('string', $descripcion)) {
+                if (validarDato('string', $descripcion) !== true) {
                     $errores[] = "La descripción del producto es inválida.";
                 }
 
-                if (!validarDato('numero', $precio)) {
+                if (validarDato('numero', $precio) !== true) {
                     $errores[] = "El precio debe ser un número positivo.";
                 }
 

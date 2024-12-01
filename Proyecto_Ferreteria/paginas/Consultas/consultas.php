@@ -17,7 +17,9 @@ function crearUsuario($nombre, $email, $pass)
     $conn = conexion();
 
     // Verifica si el correo ya existe
-    if (verificarExisteUsuario($email)) {
+    if (verificarExisteUsuario($email, $pass)) {
+        // Redirigir con mensaje de error si el correo ya está registrado
+        header("Location: ../Interfaces/registro.php?error=El+correo+electrónico+ya+está+registrado.");
         apagar($conn);
         return false; // El correo ya está registrado
     }
@@ -47,13 +49,13 @@ function crearUsuario($nombre, $email, $pass)
  * @param string $email Correo electrónico del usuario.
  * @return bool Retorna `true` si el usuario existe, `false` si no.
  */
-function verificarExisteUsuario($email)
+function verificarExisteUsuario($email, $password)
 {
     $conn = conexion();
 
     // Consulta para buscar el correo
-    $query = $conn->prepare("SELECT id FROM cliente WHERE email = ?");
-    $query->bind_param("s", $email);
+    $query = $conn->prepare("SELECT id FROM cliente WHERE email = ? AND pass = ?");
+    $query->bind_param("ss", $email, $password);
     $query->execute();
     $resultado = $query->get_result();
 
@@ -73,13 +75,13 @@ function verificarExisteUsuario($email)
  * @param string $email Correo electrónico del administrador.
  * @return bool Retorna `true` si el administrador existe, `false` si no.
  */
-function verificarExisteAdministrador($email)
+function verificarExisteAdministrador($email, $password)
 {
     $conn = conexion();
 
     // Consulta para buscar el correo en la tabla administrador
-    $query = $conn->prepare("SELECT id FROM administrador WHERE email = ?");
-    $query->bind_param("s", $email);
+    $query = $conn->prepare("SELECT id FROM administrador WHERE email = ? AND pass = ?");
+    $query->bind_param("ss", $email, $password);
     $query->execute();
     $resultado = $query->get_result();
 
@@ -115,15 +117,26 @@ function verificarProductoPorNombre($nombre)
     return $existe;
 }
 
+/**
+ * Función para crear un producto nuevo.
+ *
+ * Verifica si el producto ya existe, luego mueve la imagen al servidor y guarda el producto en la base de datos.
+ *
+ * @param string $nombre Nombre del producto.
+ * @param string $descripcion Descripción del producto.
+ * @param float $precio Precio del producto.
+ * @param array $imagen Información de la imagen del producto.
+ * @return void Redirige a la página con el estado de la operación (exitoso o error).
+ */
 function crearProducto($nombre, $descripcion, $precio, $imagen)
 {
     // Verifica si el producto ya existe
     if (verificarProductoPorNombre($nombre)) {
-        // Verifica si $nombre es un array, si lo es, conviértelo en una cadena
+        // Verifica si $nombre es un array, si lo es, lo convierte en una cadena
         if (is_array($nombre)) {
             $nombre = implode(", ", $nombre); // Convierte el array a una cadena separada por comas
         }
-        // Asegúrate de que el nombre está correctamente escapado para la URL
+        // Asegura de que el nombre está correctamente escapado para la URL
         $nombre = urlencode($nombre);
 
         // Redirige de vuelta al formulario con un mensaje de error
@@ -131,7 +144,7 @@ function crearProducto($nombre, $descripcion, $precio, $imagen)
         exit; // Detiene la ejecución después de la redirección
     }
 
-    // Mover la imagen al directorio deseado en el servidor (por ejemplo, '../../imagenes//')
+    // Mueve la imagen al directorio deseado en el servidor
     $rutaImagen = '../../imagenes///' . basename($imagen['name']);  // Cambié la ruta a '../../imagenes//'
 
     // Verifica si el directorio 'imagenes' existe, si no, lo crea
@@ -139,9 +152,9 @@ function crearProducto($nombre, $descripcion, $precio, $imagen)
         mkdir('../../imagenes/', 0777, true);  // Crea la carpeta 'imagenes' si no existe
     }
 
-    // Mover la imagen al servidor
+    // Mueve la imagen al servidor
     if (!move_uploaded_file($imagen['tmp_name'], $rutaImagen)) {
-        // Si no se pudo mover la imagen, redirigir con un error
+        // Si no se pudo mover la imagen, redirige con un error
         header("Location: ../Interfaces/agregarProducto.php?error=Hubo+un+problema+al+guardar+la+imagen.");
         exit;
     }
@@ -183,7 +196,7 @@ function modificarProducto($id, $nombre, $descripcion, $precio, $imagen = null)
 {
     $conn = conexion();  // Obtiene la conexión
 
-    // Obtener la ruta de la imagen actual desde la base de datos
+    // Obtiene la ruta de la imagen actual desde la base de datos
     $query = $conn->prepare("SELECT imagen FROM productos WHERE id = ?");
     $query->bind_param("i", $id);
     $query->execute();
@@ -191,29 +204,29 @@ function modificarProducto($id, $nombre, $descripcion, $precio, $imagen = null)
     $query->fetch();
     $query->close();
 
-    // Inicializar la ruta final de la imagen
+    // Inicializa la ruta final de la imagen
     $rutaImagenFinal = $imagenActual;
 
-    // Si se proporciona una nueva imagen, procesarla
+    // Si se proporciona una nueva imagen, se procesa
     if ($imagen !== null && $imagen['error'] == 0) {
-        // Validar la imagen
+        // Valida la imagen
         $validacionImagen = validarImagen($imagen);
         if ($validacionImagen !== true) {
-            return $validacionImagen; // Si la imagen no es válida, retornar el mensaje de error
+            return $validacionImagen; // Si la imagen no es válida, retorna el mensaje de error
         }
 
-        // Eliminar la imagen anterior si existe
+        // Elimina la imagen anterior si existe
         if ($imagenActual && file_exists($imagenActual)) {
             unlink($imagenActual); // Elimina el archivo de la imagen anterior
         }
 
-        // Mover la nueva imagen al directorio
+        // Mueve la nueva imagen al directorio
         $rutaImagen = '../../imagenes/' . basename($imagen['name']);  // Establecemos la nueva ruta de la imagen
         if (!move_uploaded_file($imagen['tmp_name'], $rutaImagen)) {
             return "Hubo un problema al guardar la imagen.";
         }
 
-        $rutaImagenFinal = $rutaImagen; // Actualizar la ruta final de la imagen
+        $rutaImagenFinal = $rutaImagen; // Actualiza la ruta final de la imagen
     }
 
     // Prepara la consulta para actualizar los datos del producto junto con la nueva imagen
@@ -252,20 +265,25 @@ function eliminarProducto($id)
     return $resultado; // Retorna `true` si se eliminó correctamente
 }
 
+/**
+ * Función para obtener los productos disponibles para los clientes.
+ *
+ * Muestra los productos en el catálogo para los clientes, con su nombre, descripción, precio e imagen.
+ */
 function obtenerProductosClientes()
 {
-    $conn = conexion();
+    $conn = conexion(); // Obtiene la conexión
 
     // Consulta para obtener los productos
     $query = $conn->prepare("SELECT nombre, precio, descripcion, imagen FROM productos");
     $query->execute();
 
-    // Usar get_result() para obtener un objeto resultante
+    // Usamos get_result() para obtener un objeto resultante
     $result = $query->get_result();
 
-    if ($result->num_rows > 0) {
+    if ($result->num_rows > 0) { // Si hay productos disponibles
         echo '<div class="catalog-container">';
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) { // Muestra cada producto
             echo '
             <div class="product-card" data-name="' . htmlspecialchars($row['nombre']) . '" data-price="' . htmlspecialchars($row['precio']) . '" data-img="' . htmlspecialchars($row['imagen']) . '">
                 <img src="' . htmlspecialchars($row['imagen']) . '" alt="Producto">
@@ -286,20 +304,25 @@ function obtenerProductosClientes()
     apagar($conn); // Cierra la conexión
 }
 
+/**
+ * Función para obtener los productos para el administrador.
+ *
+ * Muestra los productos en el catálogo para el administrador, con opciones de modificar y eliminar productos.
+ */
 function obtenerProductosAdmin()
 {
-    $conn = conexion();
+    $conn = conexion(); // Obtiene la conexión
 
     // Consulta para obtener los productos
     $query = $conn->prepare("SELECT id, nombre, precio, descripcion, imagen FROM productos");
     $query->execute();
 
-    // Usar get_result() para obtener un objeto resultante
+    // Usamos get_result() para obtener un objeto resultante
     $result = $query->get_result();
 
-    if ($result->num_rows > 0) {
+    if ($result->num_rows > 0) { // Si hay productos disponibles
         echo '<div class="catalog-container">';
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) { // Muestra cada producto
             echo '
             <div class="product-card" data-name="' . htmlspecialchars($row['nombre']) . '">
                 <img src="' . htmlspecialchars($row['imagen']) . '" alt="Producto">
